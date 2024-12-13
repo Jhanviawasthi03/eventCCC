@@ -7,6 +7,8 @@ const connectwithdb = require("./config/database.js");
 require("dotenv").config();
 const csrf = require("csurf");
 const cookieParser = require("cookie-parser");
+const cors = require('cors');
+
 
 const app = express();
 const PORT = process.env.PORT || 9000;
@@ -15,6 +17,7 @@ app.use(express.json());
 app.use(helmet());
 app.use(xss());
 app.use(hpp());
+app.use(cors());
 
 
 app.use(cookieParser());
