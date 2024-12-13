@@ -38,7 +38,7 @@ exports.register=async(req,res)=>{
   }
   
   const studentnumberStr = studentnumber.toString(); 
-  if (!studentnumberStr.startsWith("23") || studentnumberStr.length !== 8) {
+  if (!studentnumberStr.startsWith("24") || studentnumberStr.length !== 8) {
     return res.status(400).json({
       success: false,
       message: "Student number must be an 8-digit number starting with '23'.",

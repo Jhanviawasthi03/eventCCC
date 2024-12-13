@@ -28,14 +28,16 @@ app.get("/csrf-token", (req, res) => {
   res.json({ csrfToken: req.csrfToken() });
 });
 
-app.use((err, req, res, next) => {
-  if (err.code === "EBADCSRFTOKEN") {
+app.use((error, req, res, next) => {
+
+  if (error && error.message === "invalid csrf token") {
     return res.status(403).json({
       success: false,
-      message: "Invalid CSRF token. Please refresh the page and try again.",
+      message: "CSRF validation failed.",
     });
   }
-  next(err);
+
+  next(error);
 });
 
 const userRoutes = require("./routes/user");
