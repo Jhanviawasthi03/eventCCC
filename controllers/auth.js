@@ -19,7 +19,7 @@ const secretkey = process.env.RECAPTCHA_SECRET_KEY;
 
 exports.register=async(req,res)=>{
     try{
-  const{name,email,studentnumber,Year,Branch, section,residence,recaptchaToken,contact}=req.body;
+  const{name,email,gender,studentnumber,Year,Branch, section,residence,recaptchaToken,contact}=req.body;
   
 
   if (!name || !studentnumber) {
@@ -28,8 +28,32 @@ exports.register=async(req,res)=>{
       message: "Name and student number are required fields",
     });
   }
+
   
-  if (!contact || contact.toString().length !== 10) {
+  if (!studentnumber || isNaN(studentnumber)) {
+    return res.status(400).json({
+      success: false,
+      message: "Student number must be a numeric value.",
+    });
+  }
+  
+  const studentnumberStr = studentnumber.toString(); 
+  if (!studentnumberStr.startsWith("23") || studentnumberStr.length !== 8) {
+    return res.status(400).json({
+      success: false,
+      message: "Student number must be an 8-digit number starting with '23'.",
+    });
+  }
+  
+
+  
+  if (!(contact) ||isNaN(contact))  {
+    return res.status(400).json({
+      success: false,
+      message: "contact should be a number.",
+    });
+  }
+  if(contact.toString().length !== 10) {
     return res.status(400).json({
       success: false,
       message: "Please enter a 10-digit contact number.",
@@ -58,12 +82,6 @@ exports.register=async(req,res)=>{
         });
        }
     
-       if(!Year){
-        return res.status(400).json({
-            success:false,
-            message:"please enter a valid Year",
-        });
-       }
     
        if(!residence){
         return res.status(400).json({
@@ -71,25 +89,32 @@ exports.register=async(req,res)=>{
             message:"enter residence",
         });
     }
+    
+    if(!gender){
+      return res.status(400).json({
+        success:false,
+        message:"enter gender",
+      });
+    }
 
     
-    try {
-      const rresponse = await axios.post(
-        `https://www.google.com/recaptcha/api/siteverify?secret=${secretkey}&response=${recaptchaToken}`
-      );
-      const data = rresponse.data;
-      if (!data.success) {
-        return res.status(400).json({
-          success: false,
+     try {
+       const rresponse = await axios.post(
+         `https://www.google.com/recaptcha/api/siteverify?secret=${secretkey}&response=${recaptchaToken}`
+       );
+       const data = rresponse.data;
+       if (!data.success) {
+         return res.status(400).json({
+           success: false,
           message: "Failed reCAPTCHA verification",
-        });
-      }
-    } catch (error) {
-      console.error("Error during reCAPTCHA verification:", error);
-      return res.status(500).json({
-        success: false,
-        message: "Error during reCAPTCHA verification",
-      });
+         });
+       }
+     } catch (error) {
+       console.error("Error during reCAPTCHA verification:", error);
+       return res.status(500).json({
+         success: false,
+         message: "Error during reCAPTCHA verification",
+       });
     }
 
 
@@ -103,7 +128,7 @@ exports.register=async(req,res)=>{
     
 
       const user= await  User.create({
-        name,email,studentnumber,Year,Branch, section,residence,contact,
+        name,email,gender,studentnumber,Year,Branch, section,residence,contact,
       });
 
 
@@ -149,14 +174,15 @@ exports.register=async(req,res)=>{
       return res.status(200).json({
     success:true,
     message:"Succesfully registered",
-    // user: {
-    //     name: user.name,
-    //     email: user.email,
-    //     Year: user.Year,
-    //     Branch: user.Branch,
-    //     section: user.section,
-    //     residence: user.residence,
-    //   },
+    user: {
+        name: user.name,
+        email: user.email,
+        Year: user.Year,
+        Branch: user.Branch,
+        section: user.section,
+        residence: user.residence,
+        gender:user.gender
+      },
     
     });
  }
