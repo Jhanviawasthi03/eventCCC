@@ -17,7 +17,14 @@ app.use(express.json());
 app.use(helmet());
 app.use(xss());
 app.use(hpp());
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5500", 
+    methods: ["GET", "POST", "PUT", "DELETE"], 
+    credentials: true, 
+  })
+);
+
 
 
 app.use(cookieParser());
