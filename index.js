@@ -19,7 +19,7 @@ app.use(xss());
 app.use(hpp());
 app.use(
   cors({
-    origin: "http://localhost:5500", 
+    origin: "*", 
     methods: ["GET", "POST", "PUT", "DELETE"], 
     credentials: true, 
   })
