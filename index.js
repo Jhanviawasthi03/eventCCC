@@ -28,7 +28,12 @@ app.use(
 
 
 app.use(cookieParser());
-const csrfProtection = csrf({ cookie: true });
+const csrfProtection = csrf({ cookie: {
+  httpOnly: true,
+  secure: process.env.NODE_ENV === "production", 
+  sameSite: "None",
+}
+ });
 app.use(csrfProtection);
 
 app.get("/csrf-token", (req, res) => {
