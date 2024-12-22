@@ -19,7 +19,7 @@ app.use(xss());
 app.use(hpp());
 app.use(
   cors({
-    origin: "https://event-ccc.vercel.app", 
+    origin: "*", 
     methods: ["GET", "POST", "PUT", "DELETE"], 
     credentials: true, 
   })
