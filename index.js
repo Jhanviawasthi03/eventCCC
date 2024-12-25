@@ -25,7 +25,7 @@ app.use(
   })
 );
 
-
+app.options("*", cors());
 
 app.use(cookieParser());
 const csrfProtection = csrf({ cookie: {
