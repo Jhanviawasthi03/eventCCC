@@ -120,7 +120,7 @@ exports.register=async(req,res)=>{
     
 
       const user= await  User.create({
-        name,email,gender,studentnumber,Year,Branch, section,residence,contact,
+        name,email,gender,studentnumber,Branch, section,residence,
       });
 
 
