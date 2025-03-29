@@ -19,7 +19,7 @@ const secretkey = process.env.RECAPTCHA_SECRET_KEY;
 
 exports.register=async(req,res)=>{
     try{
-  const{name,email,gender,studentnumber,Year,Branch, section,residence,recaptchaToken,contact}=req.body;
+  const{name,email,gender,studentnumber,Branch, section,residence,recaptchaToken}=req.body;
   
 
   if (!name || !studentnumber) {
@@ -45,14 +45,6 @@ exports.register=async(req,res)=>{
     });
   }
   
-
-  
-  if (!(contact) ||isNaN(contact))  {
-    return res.status(400).json({
-      success: false,
-      message: "contact should be a number.",
-    });
-  }
   if(contact.toString().length !== 10) {
     return res.status(400).json({
       success: false,
@@ -143,14 +135,13 @@ exports.register=async(req,res)=>{
       });
       const emailTemplate = `
       <div style="font-family: Arial, sans-serif; font-size: 16px;">
-        <h2>Welcome to AKGEC Registration</h2>
+        <h2>Successful Registration</h2>
         <p>Hi ${user.name},</p>
-        <p>Thank you for registering with us.</p>
+        <p>you have successfully registered.</p>
         <p>Your registration details:</p>
         <ul>
           <li><strong>Email:</strong> ${user.email}</li>
           <li><strong>Branch:</strong> ${user.Branch}</li>
-          <li><strong>Year:</strong> ${user.Year}</li>
         </ul>
         <p>Best regards,<br>AKGEC Team</p>
       </div>
@@ -177,7 +168,6 @@ exports.register=async(req,res)=>{
     user: {
         name: user.name,
         email: user.email,
-        Year: user.Year,
         Branch: user.Branch,
         section: user.section,
         residence: user.residence,
