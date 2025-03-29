@@ -44,13 +44,7 @@ exports.register=async(req,res)=>{
       message: "Student number must be an 8-digit number starting with '23'.",
     });
   }
-  
-  if(contact.toString().length !== 10) {
-    return res.status(400).json({
-      success: false,
-      message: "Please enter a 10-digit contact number.",
-    });
-  }
+
   
       if(!email|| !email.endsWith("@akgec.ac.in")){
         return res.status(400).json({
